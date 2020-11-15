@@ -1,0 +1,38 @@
+name: helpi
+description: S.O.S alerts
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  google_fonts: ^1.1.0
+  flutter_svg: ^0.19.1
+
+  get: ^3.10.2
+  get_storage: ^1.3.1
+  sqflite: ^1.3.0
+  path: ^1.7.0
+
+  permission_handler: ^5.0.1+1
+  contacts_service: ^0.4.6
+  telephony: ^0.0.2
+
+  logger: ^0.9.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^4.1.3
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/empty_buttons.svg
