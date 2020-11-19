@@ -1,52 +1,41 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:helpi/core/constants.dart';
-import 'package:helpi/core/themes.dart';
-import 'package:helpi/main_bindings.dart';
-// import 'package:helpi/screen/add_button/add_button.dart';
-// import 'package:helpi/screen/add_button/add_button_bindings.dart';
-import 'package:helpi/screen/home/binding/home_bindings.dart';
-import 'package:helpi/screen/home/home.dart';
-
-Stream<LicenseEntry> addLicenses() async* {
-  final license = await rootBundle.loadString('google_fonts/OFL.txt');
-  yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-}
+import 'package:helpi/routes/routes.dart';
+import 'package:helpi/translations/translations.dart';
+import 'package:helpi/ui/theme/app_colors.dart';
+import 'package:helpi/ui/theme/app_theme.dart';
+import 'package:helpi/util/licenses.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LicenseRegistry.addLicense(addLicenses);
-  await GetStorage.init();
+  LicenseRegistry.addLicense(licenses);
   runApp(HelpiApp());
 }
 
 class HelpiApp extends StatelessWidget {
-  final _routes = <GetPage>[
-    GetPage(
-      name: HomeScreen.ROUTE,
-      page: () => HomeScreen(),
-      binding: HomeContentBindings(),
-    ),
-    // GetPage(
-    //   name: AddButtonScreen.ROUTE,
-    //   page: () => AddButtonScreen(),
-    //   binding: AddButtonBindings(),
-    // ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    ThemeData defaultTheme = Theme.of(context);
+    TextTheme textTheme = AppTheme.textTheme(defaultTheme.textTheme);
+    ThemeData theme = AppTheme.defaultTheme.copyWith(
+      textTheme: textTheme,
+      appBarTheme: AppTheme.appBarTheme.copyWith(
+        textTheme: textTheme.apply(
+          bodyColor: AppColors.primaryColor,
+        ),
+      ),
+    );
+
     return GetMaterialApp(
-      initialBinding: HelpiAppBindings(),
-      title: Constants.APP_NAME,
-      initialRoute: HomeScreen.ROUTE,
-      defaultTransition: Transition.rightToLeftWithFade,
-      transitionDuration: Duration(milliseconds: 300),
-      theme: Themes.of(context),
-      getPages: this._routes,
+      theme: theme,
+      getPages: AppRoutes.routes,
+      initialRoute: AppRoutes.initial,
+      home: AppRoutes.home,
+      initialBinding: AppRoutes.initialBindings,
+      locale: AppTranslations.locale,
+      fallbackLocale: AppTranslations.fallbackLocale,
+      translationsKeys: AppTranslations.translationKeys,
     );
   }
 }

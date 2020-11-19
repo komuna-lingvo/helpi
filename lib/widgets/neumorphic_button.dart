@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpi/widget/neumorphic_widget.dart';
+import 'package:helpi/core/widget/neumorphic_widget.dart';
 
 class NeumorphicButton extends StatelessWidget {
   final String text;

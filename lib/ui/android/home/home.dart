@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpi/screen/add_button/add_button.dart';
-import 'package:helpi/screen/home/widget/button_grid.dart';
+import 'package:helpi/screen/home/widget/home_body.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String ROUTE = 'home';
@@ -15,14 +15,17 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: _theme.backgroundColor,
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Add button'),
+        label: Text('Add a button'),
         icon: Icon(Icons.add_circle),
-        tooltip: 'Add button',
+        tooltip: 'Add a button',
         onPressed: () => Get.toNamed(AddButtonScreen.ROUTE),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: SafeArea(
-        child: Container(child: Center(child: ButtonGrid())),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(child: Center(child: HomeBody())),
+        ),
       ),
     );
   }

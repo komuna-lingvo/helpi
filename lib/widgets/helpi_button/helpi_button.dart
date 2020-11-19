@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helpi/core/model/button.dart';
-import 'package:helpi/widget/neumorphic_button.dart';
+import 'package:helpi/widgets/neumorphic_button.dart';
 import 'package:telephony/telephony.dart';
 
 class HelpiButton extends StatelessWidget {

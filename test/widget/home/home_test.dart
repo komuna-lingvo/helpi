@@ -2,32 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:helpi/core/service/helpi_database.dart';
-import 'package:helpi/screen/home/controller/button_grid_controller.dart';
-import 'package:helpi/screen/home/widget/button_grid.dart';
+import 'package:helpi/controllers/home_controller.dart';
+import 'package:helpi/data/repository/button_repository.dart';
+import 'package:helpi/data/repository/database.dart';
+import 'package:helpi/ui/android/home/widget/home.dart';
 import 'package:mockito/mockito.dart';
 import 'package:sqflite/sqflite.dart';
 
-class MockHelpiDatabase extends Mock implements HelpiDatabase {}
+class MockHelpiDatabase extends Mock implements AppDatabase {}
+
+class MockButtonRepository extends Mock implements ButtonRepository {}
 
 class MockDatabase extends Mock implements Database {}
 
 void main() {
-  group('ButtonGrid Widget', () {
-    ButtonGridController controller;
+  group('HomeBody Widget', () {
+    HomeController controller;
+    ButtonRepository repository;
     MockDatabase db;
 
     setUpAll(() {
-      HelpiDatabase helpi = new MockHelpiDatabase();
+      AppDatabase database = new MockHelpiDatabase();
+      repository = new MockButtonRepository();
       db = new MockDatabase();
 
-      when(helpi.database).thenAnswer((_) => Future.value(db));
+      when(database.instance).thenAnswer((_) => Future.value(db));
 
-      Get.lazyPut(() => helpi);
+      Get.lazyPut(() => database);
     });
 
     setUp(() {
-      controller = new ButtonGridController();
+      controller = new HomeController(repository: repository);
       Get.lazyPut(() => controller);
     });
 
@@ -36,7 +41,7 @@ void main() {
       when(db.query(any))
           .thenAnswer((_) => Future.value(<Map<String, dynamic>>[]));
 
-      await tester.pumpWidget(ButtonGrid());
+      await tester.pumpWidget(Home());
 
       final indicator = find.byType(CircularProgressIndicator);
       final image = find.byType(SvgPicture);
@@ -56,7 +61,7 @@ void main() {
         ]),
       );
 
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: ButtonGrid())));
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: Home())));
 
       final indicator = find.byType(CircularProgressIndicator);
       final image = find.byType(SvgPicture);

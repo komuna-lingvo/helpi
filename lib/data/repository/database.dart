@@ -3,26 +3,30 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class HelpiDatabase extends GetxService {
-  var logger = Logger();
-  // HelpiDatabase._internal();
-  // factory HelpiDatabase() => _instance;
+class AppDatabase extends GetxService {
+  var _logger = Logger();
 
-  // static final HelpiDatabase _instance = HelpiDatabase._internal();
   static const String _DB_NAME = 'helpi';
   static const int _DB_VERSION = 1;
+
   static const String TABLE_BUTTONS = "buttons";
   static const String TABLE_CONTACTS = "contacts";
 
   Future<Database> _database;
 
-  Future<Database> get database {
-    logger.d('database');
-    return _database ??= this.initializeDatabase();
+  @override
+  void onInit() {
+    super.onInit();
+
+    this._initializeDatabase();
   }
 
-  Future<Database> initializeDatabase() async {
-    logger.d('initializeDatabase');
+  Future<Database> get database {
+    return _database ??= this._initializeDatabase();
+  }
+
+  Future<Database> _initializeDatabase() async {
+    _logger.d('initializeDatabase');
     var databasePath = await getDatabasesPath();
     String path = join(databasePath, "$_DB_NAME.db");
 
