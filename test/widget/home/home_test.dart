@@ -41,7 +41,7 @@ void main() {
       when(db.query(any))
           .thenAnswer((_) => Future.value(<Map<String, dynamic>>[]));
 
-      await tester.pumpWidget(Home());
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: Home())));
 
       final indicator = find.byType(CircularProgressIndicator);
       final image = find.byType(SvgPicture);
