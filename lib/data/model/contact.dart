@@ -1,8 +1,8 @@
 class Contact {
   final int id;
-  final String name;
-  final String phoneNumber;
-  final int buttonId;
+  String name;
+  String phoneNumber;
+  int buttonId;
 
   Contact({this.id, this.name, this.phoneNumber, this.buttonId});
 
@@ -22,5 +22,10 @@ class Contact {
       phoneNumber: json['phone_number'],
       buttonId: json['button_id'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'Contact{id: $id, name: $name, phoneNumber: $phoneNumber, buttonId: $buttonId}';
   }
 }

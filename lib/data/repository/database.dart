@@ -21,12 +21,12 @@ class AppDatabase extends GetxService {
     this._initializeDatabase();
   }
 
-  Future<Database> get database {
+  Future<Database> get instance {
     return _database ??= this._initializeDatabase();
   }
 
   Future<Database> _initializeDatabase() async {
-    _logger.d('initializeDatabase');
+    this._logger.d('initializeDatabase');
     var databasePath = await getDatabasesPath();
     String path = join(databasePath, "$_DB_NAME.db");
 
@@ -36,7 +36,9 @@ class AppDatabase extends GetxService {
           id INTEGER PRIMARY KEY,
           title TEXT NOT NULL UNIQUE
           );
-          
+          ''');
+      this._logger.d('table $TABLE_BUTTONS created');
+      await database.execute('''
           CREATE TABLE IF NOT EXISTS $TABLE_CONTACTS (
           id INTEGER PRIMARY KEY,
           name TEXT NOT NULL,
@@ -44,6 +46,7 @@ class AppDatabase extends GetxService {
           button_id INTEGER NOT NULL
           );
           ''');
+      this._logger.d('table $TABLE_CONTACTS created');
     }
 
     this._database = openDatabase(
@@ -52,6 +55,7 @@ class AppDatabase extends GetxService {
       onCreate: _onCreate,
       onDowngrade: onDatabaseDowngradeDelete,
     );
+
     return this._database;
   }
 }

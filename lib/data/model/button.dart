@@ -1,6 +1,6 @@
 class Button {
   final int id;
-  final String title;
+  String title;
 
   Button({this.id, this.title});
 
