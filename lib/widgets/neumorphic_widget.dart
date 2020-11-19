@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helpi/core/decorations.dart';
+import 'package:helpi/ui/theme/decorations.dart';
 
 class NeumorphicWidget extends StatefulWidget {
   final Widget child;
@@ -9,6 +9,7 @@ class NeumorphicWidget extends StatefulWidget {
   final bool disabled;
   final bool mini;
   final VoidCallback onPressed;
+  final VoidCallback onLongPress;
 
   const NeumorphicWidget({
     @required this.child,
@@ -18,6 +19,7 @@ class NeumorphicWidget extends StatefulWidget {
     this.disabled = false,
     this.mini = false,
     this.onPressed,
+    this.onLongPress,
   });
 
   @override
@@ -80,29 +82,27 @@ class _NeumorphicWidgetState extends State<NeumorphicWidget> {
     void _onTapUpGesture(TapUpDetails tapUpDetails) {
       setState(() {
         this._isPressed = false;
-        print('_isPressed ${this._isPressed}');
       });
     }
 
     void _onTapDownGesture(TapDownDetails tapUpDetails) {
       setState(() {
         this._isPressed = true;
-        print('_isPressed ${this._isPressed}');
       });
     }
 
     void _onLongPressEndGesture(LongPressEndDetails longPressEndDetails) {
       setState(() {
         this._isPressed = false;
-        print('_isPressed ${this._isPressed}');
       });
     }
 
     return GestureDetector(
-      onTapUp: _onTapUpGesture,
-      onTapDown: _onTapDownGesture,
-      onLongPressEnd: _onLongPressEndGesture,
+      onTapUp: this.widget.disabled ? null : _onTapUpGesture,
+      onTapDown: this.widget.disabled ? null : _onTapDownGesture,
+      onLongPressEnd: this.widget.disabled ? null : _onLongPressEndGesture,
       onTap: this.widget.onPressed,
+      onLongPress: this.widget.onLongPress,
       child: Container(
         width: this.widget.width ?? _defaultWidth,
         height: this.widget.height ?? _defaultHeight,

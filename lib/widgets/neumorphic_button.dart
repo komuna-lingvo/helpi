@@ -1,5 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:helpi/core/widget/neumorphic_widget.dart';
+import 'package:helpi/widgets/neumorphic_widget.dart';
 
 class NeumorphicButton extends StatelessWidget {
   final String text;
@@ -19,18 +20,6 @@ class NeumorphicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('Building NeumorphicButton...');
-    ThemeData _theme = Theme.of(context);
-    MediaQueryData _mediaQueryData = MediaQuery.of(context);
-
-    Orientation _orientation = _mediaQueryData.orientation;
-    TextStyle _textStyle = _theme.textTheme.headline1
-        .copyWith(
-          fontSize: 104.0,
-          color: _theme.primaryColor,
-        )
-        .apply(
-          fontSizeFactor: _orientation == Orientation.portrait ? 1 : .75,
-        );
 
     return Container(
       width: this.width,
@@ -42,8 +31,11 @@ class NeumorphicButton extends StatelessWidget {
         onPressed: this.onPressed,
         child: Container(
           child: Center(
-            child:
-                Text(this.text, style: _textStyle, textAlign: TextAlign.center),
+            child: AutoSizeText(
+              this.text.toUpperCase(),
+              minFontSize: 40.0,
+              textAlign: TextAlign.center,
+            ),
           ),
           decoration: BoxDecoration(shape: this.shape ?? BoxShape.circle),
         ),
