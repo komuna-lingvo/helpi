@@ -1,16 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:helpi/data/model/button.dart';
-import 'package:helpi/data/service/helpi_button_service.dart';
+import 'package:helpi/data/repository/button_repository.dart';
+import 'package:helpi/widgets/helpi_button/controller.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomeController extends GetxController {
   var _logger = Logger();
 
-  final HelpiButtonService service;
+  final ButtonRepository repository;
 
-  HomeController({@required this.service});
+  HomeController({@required this.repository});
 
   RxList<Button> buttons = RxList<Button>();
   RxBool isLoading = true.obs;
@@ -18,34 +20,46 @@ class HomeController extends GetxController {
 
   @override
   void onReady() async {
+    this._onWidgetBuild();
     super.onReady();
-    this.getAllButtons();
   }
 
-  void getAllButtons() async {
-    List<Button> buttons = await this.service.getAllButtons();
+  Future<void> getAllButtons() async {
+    List<Button> buttons = await this.repository.getAllButtons();
 
     this.isLoading.value = false;
 
     if (buttons.isEmpty) {
+      this._logger.d('no buttons found');
+      return false;
+    }
+
+    Get.put(HelpiButtonController(repository: this.repository));
+
+    this.buttons.addAll(buttons);
+  }
+
+  void _onWidgetBuild() async {
+    await this.getAllButtons();
+
+    if (this.buttons.isEmpty) {
       return;
     }
 
-    Get.lazyPut(() => HelpiButtonController());
-
-    this.buttons.addAll(buttons);
-
-    this.isAvailable.value = await this._isSMSPermissionGranted();
+    this._requestSMSPermission();
   }
 
-  Future<bool> _isSMSPermissionGranted() async {
+  void _requestSMSPermission() async {
+    if (kDebugMode) {
+      this.isAvailable.value = true;
+      return;
+    }
+
     try {
       PermissionStatus permissionStatus = await Permission.sms.request();
-      _logger.d('has sms permissions?', permissionStatus.isGranted);
-      return permissionStatus.isGranted;
+      this.isAvailable.value = permissionStatus.isGranted;
     } on Exception {
       StackTrace.current;
-      return false;
     }
   }
 }

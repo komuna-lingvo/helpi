@@ -1,9 +1,15 @@
 import 'package:get/get.dart';
-import 'package:helpi/screen/home/controller/home_body_controller.dart';
+import 'package:helpi/controllers/home_controller.dart';
+import 'package:helpi/data/repository/button_repository.dart';
+import 'package:helpi/data/repository/database.dart';
 
 class HomeBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => HomeBodyController());
+    Get.lazyPut(() {
+      return HomeController(
+        repository: ButtonRepository(database: AppDatabase()),
+      );
+    });
   }
 }
