@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:helpi/controllers/home_controller.dart';
 import 'package:helpi/data/model/button.dart';
+import 'package:helpi/ui/theme/app_colors.dart';
 import 'package:helpi/widgets/helpi_button/helpi_button.dart';
 
 class Home extends GetView<HomeController> {
@@ -38,6 +39,7 @@ class Home extends GetView<HomeController> {
             ),
             AutoSizeText(
               "You don't have any button.\nTry add one.",
+              style: TextStyle(color: AppColors.primaryColor),
               textAlign: TextAlign.center,
               minFontSize: 24.0,
             ),
