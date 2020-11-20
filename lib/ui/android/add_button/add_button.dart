@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:helpi/controllers/add_button_controller.dart';
@@ -14,7 +15,6 @@ class AddButtonScreen extends GetView<AddButtonController> {
     return Scaffold(
       backgroundColor: _theme.backgroundColor,
       appBar: AppBar(
-        title: Text('Add a Button'),
         actions: [
           IconButton(
             icon: Icon(Icons.person_add),
@@ -22,6 +22,10 @@ class AddButtonScreen extends GetView<AddButtonController> {
             onPressed: this.controller.onAddContactPressed,
           ),
         ],
+        bottom: AppBar(
+          automaticallyImplyLeading: false,
+          title: AutoSizeText('Add a Button', minFontSize: 40.0),
+        ),
       ),
       body: SafeArea(
         child: Padding(
